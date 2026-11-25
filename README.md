@@ -9,18 +9,18 @@ This repository hosts the public installer and release downloads. The source cod
 **Homebrew**
 
 ```bash
-brew install --cask novus-lab-dev/tap/querydock
+brew install --cask querydock-dev/tap/querydock
 ```
 
 **One-line installer**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Novus-Lab-Dev/querydock-releases/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/querydock-dev/querydock-releases/main/install.sh | bash
 ```
 
 ## Windows and Linux
 
-Download the `.msi` / `-setup.exe` (Windows) or `.AppImage` / `.deb` / `.rpm` (Linux) from the [latest release](https://github.com/Novus-Lab-Dev/querydock-releases/releases/latest).
+Download the `.msi` / `-setup.exe` (Windows) or `.AppImage` / `.deb` / `.rpm` (Linux) from the [latest release](https://github.com/querydock-dev/querydock-releases/releases/latest).
 
 ## macOS "could not verify" warning
 
