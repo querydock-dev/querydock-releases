@@ -2,12 +2,12 @@
 # ==============================================================================
 # QueryDock macOS One-Line Installer
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/Novus-Lab-Dev/querydock-releases/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/querydock-dev/querydock-releases/main/install.sh | bash
 # ==============================================================================
 
 set -e
 
-REPO="Novus-Lab-Dev/querydock-releases"
+REPO="querydock-dev/querydock-releases"
 APP_NAME="QueryDock"
 INSTALL_DIR="/Applications"
 TARGET_APP="$INSTALL_DIR/$APP_NAME.app"
