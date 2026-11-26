@@ -11,6 +11,9 @@ REPO="querydock-dev/querydock-releases"
 APP_NAME="QueryDock"
 INSTALL_DIR="/Applications"
 TARGET_APP="$INSTALL_DIR/$APP_NAME.app"
+# Counted download: the QueryDock server logs it and redirects to the latest
+# universal DMG on GitHub. If it is unreachable, the GitHub lookup below is used.
+COUNTED_URL="https://api.querydock.dev/download/mac?src=script"
 
 BOLD="\033[1m"
 GREEN="\033[32m"
@@ -76,13 +79,22 @@ cleanup() {
 }
 trap cleanup EXIT
 
-echo -e "Downloading QueryDock DMG from:"
-echo -e "  ${YELLOW}${DMG_URL}${RESET}"
-
-if ! curl -fL --progress-bar "$DMG_URL" -o "$DMG_PATH"; then
-  echo -e "${RED}Failed to download from ${DMG_URL}.${RESET}"
-  echo -e "Please ensure a release asset exists for your architecture."
-  exit 1
+echo -e "Downloading QueryDock DMG..."
+# The counted URL falls back to the releases web page when GitHub's API is down
+# or rate limited, and curl would save that HTML as the DMG. Keep the file only
+# if it really is a disk image; a stalled transfer (<1 KB/s for 30s) also falls
+# through to the direct GitHub download.
+if curl -fL --progress-bar --connect-timeout 10 --speed-limit 1024 --speed-time 30 \
+    "$COUNTED_URL" -o "$DMG_PATH" && hdiutil imageinfo "$DMG_PATH" >/dev/null 2>&1; then
+  :
+else
+  echo -e "Retrying from:"
+  echo -e "  ${YELLOW}${DMG_URL}${RESET}"
+  if ! curl -fL --progress-bar "$DMG_URL" -o "$DMG_PATH"; then
+    echo -e "${RED}Failed to download from ${DMG_URL}.${RESET}"
+    echo -e "Please ensure a release asset exists for your architecture."
+    exit 1
+  fi
 fi
 
 echo -e "Mounting disk image..."
